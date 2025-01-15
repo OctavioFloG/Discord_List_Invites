@@ -1,49 +1,20 @@
 import 'dotenv/config';
-import { getRPSChoices } from './game.js';
-import { capitalize, InstallGlobalCommands } from './utils.js';
+import { InstallGlobalCommands } from './utils.js';
 
-// Get the game choices from game.js
-function createCommandChoices() {
-  const choices = getRPSChoices();
-  const commandChoices = [];
-
-  for (let choice of choices) {
-    commandChoices.push({
-      name: capitalize(choice),
-      value: choice.toLowerCase(),
-    });
-  }
-
-  return commandChoices;
-}
-
-// Simple test command
-const TEST_COMMAND = {
-  name: 'test',
-  description: 'Basic command',
-  type: 1,
-  integration_types: [0, 1],
-  contexts: [0, 1, 2],
+const INVITACIONES_COMMAND = {
+  name: 'invitaciones',
+  description: 'Muestra las invitaciones activas del servidor con sus detalles.',
+  type: 1, // Comando de tipo slash
 };
 
-// Command containing options
-const CHALLENGE_COMMAND = {
-  name: 'challenge',
-  description: 'Challenge to a match of rock paper scissors',
-  options: [
-    {
-      type: 3,
-      name: 'object',
-      description: 'Pick your object',
-      required: true,
-      choices: createCommandChoices(),
-    },
-  ],
-  type: 1,
-  integration_types: [0, 1],
-  contexts: [0, 2],
+const MIS_INVITACIONES_COMMAND = {
+  name: 'mis_invitaciones',
+  description: 'Muestra las invitaciones que has creado.',
+  type: 1, // Comando de tipo slash
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND];
+// Lista de todos los comandos a registrar
+const ALL_COMMANDS = [INVITACIONES_COMMAND, MIS_INVITACIONES_COMMAND];
 
+// Registra los comandos globalmente
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);

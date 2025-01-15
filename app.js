@@ -1,59 +1,81 @@
 import 'dotenv/config';
-import express from 'express';
-import {
-  InteractionType,
-  InteractionResponseType,
-  verifyKeyMiddleware,
-} from 'discord-interactions';
-import { getRandomEmoji } from './utils.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 
-// Create an express app
-const app = express();
-// Get port, or default to 3000
-const PORT = process.env.PORT || 3000;
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildInvites],
+});
 
-/**
- * Interactions endpoint URL where Discord will send HTTP requests
- * Parse request body and verifies incoming requests using discord-interactions package
- */
-app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
-  // Interaction type and data
-  const { type, data } = req.body;
+const BOT_TOKEN = process.env.DISCORD_TOKEN;
 
-  /**
-   * Handle verification requests
-   */
-  if (type === InteractionType.PING) {
-    return res.send({ type: InteractionResponseType.PONG });
-  }
+client.once('ready', () => {
+  console.log(`¡Bot iniciado como ${client.user.tag}!`);
+});
 
-  /**
-   * Handle slash command requests
-   * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
-   */
-  if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name } = data;
+client.on('interactionCreate', async (interaction) => {
+  if (!interaction.isCommand()) return;
 
-    // "test" command
-    if (name === 'test') {
-      // Send a message into the channel where command was triggered from
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Fetches a random emoji to send from a helper function
-          content: `hello world ${getRandomEmoji()}`,
-        },
+  const { commandName, guild } = interaction;
+
+  if (commandName === 'invitaciones') {
+    try {
+      const invites = await guild.invites.fetch();
+
+      if (invites.size === 0) {
+        await interaction.reply({
+          content: 'No se encontraron invitaciones activas en este servidor.',
+          ephemeral: true, // Visible solo para el usuario
+        });
+        return;
+      }
+
+      const inviteDetails = invites.map((invite) => {
+        const inviterName = invite.inviter?.tag || 'Desconocido';
+        return `Creado por: ${inviterName}\nEnlace: https://discord.gg/${invite.code}\nUsos: ${invite.uses}`;
+      }).join('\n\n');
+
+      await interaction.reply({
+        content: `📜 **Lista de invitaciones activas:**\n\n${inviteDetails}`,
+        ephemeral: true,
+      });
+    } catch (error) {
+      console.error('Error al obtener las invitaciones:', error);
+      await interaction.reply({
+        content: 'Hubo un error al intentar obtener las invitaciones.',
+        ephemeral: true,
       });
     }
-
-    console.error(`unknown command: ${name}`);
-    return res.status(400).json({ error: 'unknown command' });
   }
 
-  console.error('unknown interaction type', type);
-  return res.status(400).json({ error: 'unknown interaction type' });
+  if (commandName === 'mis_invitaciones') {
+    try {
+      const invites = await guild.invites.fetch();
+
+      const userInvites = invites.filter((invite) => invite.inviter?.id === interaction.user.id);
+
+      if (userInvites.size === 0) {
+        await interaction.reply({
+          content: 'No has creado invitaciones en este servidor.',
+          ephemeral: true,
+        });
+        return;
+      }
+
+      const userInviteDetails = userInvites.map((invite) => {
+        return `Enlace: https://discord.gg/${invite.code}\nUsos: ${invite.uses}`;
+      }).join('\n\n');
+
+      await interaction.reply({
+        content: `📜 **Tus invitaciones:**\n\n${userInviteDetails}`,
+        ephemeral: true,
+      });
+    } catch (error) {
+      console.error('Error al obtener las invitaciones del usuario:', error);
+      await interaction.reply({
+        content: 'Hubo un error al intentar obtener tus invitaciones.',
+        ephemeral: true,
+      });
+    }
+  }
 });
 
-app.listen(PORT, () => {
-  console.log('Listening on port', PORT);
-});
+client.login(BOT_TOKEN);
