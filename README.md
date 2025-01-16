@@ -12,7 +12,6 @@ Este proyecto es un bot para Discord que permite visualizar invitaciones dentro 
 ├── .env -> Archivo para variables de entorno
 ├── app.js      -> Punto de entrada principal del bot
 ├── commands.js -> Configuración de los comandos slash
-├── game.js     -> Lógica específica para juegos (no usado en este bot)
 ├── utils.js    -> Funciones auxiliares reutilizables
 ├── package.json
 ├── README.md
