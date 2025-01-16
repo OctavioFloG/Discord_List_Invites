@@ -9,12 +9,6 @@ Este proyecto es un bot para Discord que permite visualizar invitaciones dentro 
 
 ## Estructura del Proyecto
 ```plaintext
-├── examples    -> Ejemplos de códigos específicos para funciones del bot
-│   ├── app.js  -> Código terminado para referencia
-│   ├── button.js
-│   ├── command.js
-│   ├── modal.js
-│   └── selectMenu.js
 ├── .env -> Archivo para variables de entorno
 ├── app.js      -> Punto de entrada principal del bot
 ├── commands.js -> Configuración de los comandos slash
