@@ -2,14 +2,14 @@ import 'dotenv/config';
 import { InstallGlobalCommands } from './utils.js';
 
 const INVITACIONES_COMMAND = {
-  name: 'invitaciones',
-  description: 'Muestra las invitaciones activas del servidor con sus detalles.',
+  name: 'invites',
+  description: 'Show active invites from server.',
   type: 1, // Comando de tipo slash
 };
 
 const MIS_INVITACIONES_COMMAND = {
-  name: 'mis_invitaciones',
-  description: 'Muestra las invitaciones que has creado.',
+  name: 'my_invites',
+  description: 'Show invites you\'ve created.',
   type: 1, // Comando de tipo slash
 };
 

@@ -16,13 +16,13 @@ client.on('interactionCreate', async (interaction) => {
 
   const { commandName, guild } = interaction;
 
-  if (commandName === 'invitaciones') {
+  if (commandName === 'invites') {
     try {
       const invites = await guild.invites.fetch();
 
       if (invites.size === 0) {
         await interaction.reply({
-          content: 'No se encontraron invitaciones activas en este servidor.',
+          content: 'No active invites in this server.',
           ephemeral: true,
         });
         return;
@@ -37,19 +37,19 @@ client.on('interactionCreate', async (interaction) => {
       }).join('\n\n');
 
       await interaction.reply({
-        content: `🏆 ** Ranking de las 5 invitaciones con más usos **🏆\n\n${inviteDetails}`,
+        content: `🏆 ** Top 5 most used invitations **🏆\n\n${inviteDetails}`,
         ephemeral: true,
       });
     } catch (error) {
-      console.error('Error al obtener las invitaciones:', error);
+      console.error('Error trying to get invitations:', error);
       await interaction.reply({
-        content: 'Hubo un error al intentar obtener las invitaciones.',
+        content: 'There was an error while trying to obtain the invitations.',
         ephemeral: true,
       });
     }
   }
 
-  if (commandName === 'mis_invitaciones') {
+  if (commandName === 'my_invites') {
     try {
       const invites = await guild.invites.fetch();
 
@@ -57,7 +57,7 @@ client.on('interactionCreate', async (interaction) => {
 
       if (userInvites.size === 0) {
         await interaction.reply({
-          content: 'No has creado invitaciones en este servidor.',
+          content: 'You\'ve not created invitations on this server.',
           ephemeral: true,
         });
         return;
@@ -68,13 +68,13 @@ client.on('interactionCreate', async (interaction) => {
       }).join('\n\n');
 
       await interaction.reply({
-        content: `📜 **Tus invitaciones:**\n\n${userInviteDetails}`,
+        content: `📜 **Your invites:**\n\n${userInviteDetails}`,
         ephemeral: true,
       });
     } catch (error) {
-      console.error('Error al obtener las invitaciones del usuario:', error);
+      console.error('Error when getting user invitations:', error);
       await interaction.reply({
-        content: 'Hubo un error al intentar obtener tus invitaciones.',
+        content: 'There was an error trying to get your invitations.',
         ephemeral: true,
       });
     }
