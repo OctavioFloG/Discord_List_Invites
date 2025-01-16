@@ -23,18 +23,21 @@ client.on('interactionCreate', async (interaction) => {
       if (invites.size === 0) {
         await interaction.reply({
           content: 'No se encontraron invitaciones activas en este servidor.',
-          ephemeral: true, // Visible solo para el usuario
+          ephemeral: true,
         });
         return;
       }
 
-      const inviteDetails = invites.map((invite) => {
+      // Ordenar invitaciones por usos en orden descendente
+      const sortedInvites = invites.sort((a, b) => b.uses - a.uses).first(5);
+
+      const inviteDetails = sortedInvites.map((invite) => {
         const inviterName = invite.inviter?.tag || 'Desconocido';
         return `Creado por: ${inviterName}\nEnlace: https://discord.gg/${invite.code}\nUsos: ${invite.uses}`;
       }).join('\n\n');
 
       await interaction.reply({
-        content: `📜 **Lista de invitaciones activas:**\n\n${inviteDetails}`,
+        content: `🏆 ** Ranking de las 5 invitaciones con más usos **🏆\n\n${inviteDetails}`,
         ephemeral: true,
       });
     } catch (error) {
