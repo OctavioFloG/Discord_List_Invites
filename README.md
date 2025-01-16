@@ -1,7 +1,7 @@
 # Discord Bot Project
 
 ## Descripción
-Este proyecto es un bot para Discord que permite gestionar invitaciones dentro de un servidor. Proporciona comandos para listar todas las invitaciones activas y obtener detalles específicos sobre las invitaciones creadas por el usuario que ejecuta el comando.
+Este proyecto es un bot para Discord que permite visualizar invitaciones dentro de un servidor. Proporciona comandos para listar todas las invitaciones activas y obtener detalles específicos sobre las invitaciones creadas por el usuario que ejecuta el comando.
 
 ## Características Principales
 - **Listado de Invitaciones:** Muestra una lista de todas las invitaciones activas del servidor, incluyendo el creador, el enlace y la cantidad de usos.
