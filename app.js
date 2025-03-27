@@ -79,6 +79,38 @@ client.on('interactionCreate', async (interaction) => {
       });
     }
   }
+
+  if (commandName === 'user_invites') {
+    try {
+      const targetUser = interaction.options.getUser('usuario');
+      const invites = await guild.invites.fetch();
+
+      const userInvites = invites.filter((invite) => invite.inviter?.id === targetUser.id);
+
+      if (userInvites.size === 0) {
+        await interaction.reply({
+          content: `${targetUser.tag} hasn't created any invitations on this server.`,
+          ephemeral: true,
+        });
+        return;
+      }
+
+      const userInviteDetails = userInvites.map((invite) => {
+        return `URL: https://discord.gg/${invite.code}\nUses: ${invite.uses}`;
+      }).join('\n\n');
+
+      await interaction.reply({
+        content: `📜 **Invites created by ${targetUser.tag}:**\n\n${userInviteDetails}`,
+        ephemeral: true,
+      });
+    } catch (error) {
+      console.error('Error when getting user invitations:', error);
+      await interaction.reply({
+        content: 'There was an error trying to get the invitations.',
+        ephemeral: true,
+      });
+    }
+  }
 });
 
 client.login(BOT_TOKEN);
