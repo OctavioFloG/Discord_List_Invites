@@ -32,8 +32,8 @@ client.on('interactionCreate', async (interaction) => {
       const sortedInvites = invites.sort((a, b) => b.uses - a.uses).first(5);
 
       const inviteDetails = sortedInvites.map((invite) => {
-        const inviterName = invite.inviter?.tag || 'Desconocido';
-        return `Creado por: ${inviterName}\nEnlace: https://discord.gg/${invite.code}\nUsos: ${invite.uses}`;
+        const inviterName = invite.inviter?.tag || 'Unknown';
+        return `Created by: ${inviterName}\URL: https://discord.gg/${invite.code}\nUses: ${invite.uses}`;
       }).join('\n\n');
 
       await interaction.reply({
@@ -64,7 +64,7 @@ client.on('interactionCreate', async (interaction) => {
       }
 
       const userInviteDetails = userInvites.map((invite) => {
-        return `Enlace: https://discord.gg/${invite.code}\nUsos: ${invite.uses}`;
+        return `URL: https://discord.gg/${invite.code}\nUses: ${invite.uses}`;
       }).join('\n\n');
 
       await interaction.reply({
